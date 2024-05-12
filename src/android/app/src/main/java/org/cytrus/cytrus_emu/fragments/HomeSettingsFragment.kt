@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
+import androidx.core.widget.doOnTextChanged
 import androidx.documentfile.provider.DocumentFile
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -24,14 +25,19 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.transition.MaterialSharedAxis
 import org.cytrus.cytrus_emu.CytrusApplication
+import org.cytrus.cytrus_emu.HomeNavigationDirections
 import org.cytrus.cytrus_emu.R
 import org.cytrus.cytrus_emu.adapters.HomeSettingAdapter
+import org.cytrus.cytrus_emu.databinding.DialogSoftwareKeyboardBinding
 import org.cytrus.cytrus_emu.databinding.FragmentHomeSettingsBinding
 import org.cytrus.cytrus_emu.features.settings.model.Settings
+import org.cytrus.cytrus_emu.features.settings.model.StringSetting
 import org.cytrus.cytrus_emu.features.settings.ui.SettingsActivity
 import org.cytrus.cytrus_emu.features.settings.utils.SettingsFile
+import org.cytrus.cytrus_emu.model.Game
 import org.cytrus.cytrus_emu.model.HomeSetting
 import org.cytrus.cytrus_emu.ui.main.MainActivity
 import org.cytrus.cytrus_emu.utils.GameHelper
@@ -76,6 +82,41 @@ class HomeSettingsFragment : Fragment() {
                 R.string.settings_description,
                 R.drawable.ic_settings,
                 { SettingsActivity.launch(requireContext(), SettingsFile.FILE_NAME_CONFIG, "") }
+            ),
+            HomeSetting(
+                R.string.artic_base_connect,
+                R.string.artic_base_connect_description,
+                R.drawable.ic_network,
+                {
+                    val inflater = LayoutInflater.from(context)
+                    val inputBinding = DialogSoftwareKeyboardBinding.inflate(inflater)
+                    var textInputValue: String = ""
+
+                    inputBinding.editTextInput.setText(textInputValue)
+                    inputBinding.editTextInput.doOnTextChanged { text, _, _, _ ->
+                        textInputValue = text.toString()
+                    }
+
+                    val dialog = context?.let {
+                        MaterialAlertDialogBuilder(it)
+                            .setView(inputBinding.root)
+                            .setTitle(getString(R.string.artic_base_enter_address))
+                            .setPositiveButton(android.R.string.ok) { _, _ ->
+                                if (textInputValue.isNotEmpty()) {
+                                    val menu = Game(
+                                        title = getString(R.string.artic_base),
+                                        path = "articbase://$textInputValue",
+                                        filename = ""
+                                    )
+                                    val action =
+                                        HomeNavigationDirections.actionGlobalEmulationActivity(menu)
+                                    binding.root.findNavController().navigate(action)
+                                }
+                            }
+                            .setNegativeButton(android.R.string.cancel) {_, _ -> }
+                            .show()
+                    }
+                }
             ),
             HomeSetting(
                 R.string.system_files,
