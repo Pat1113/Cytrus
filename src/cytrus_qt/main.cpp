@@ -966,6 +966,10 @@ void GMainWindow::ConnectMenuEvents() {
 
     // Help
     connect_menu(ui->action_Open_Cytrus_Folder, &GMainWindow::OnOpenCytrusFolder);
+    connect_menu(ui->action_Open_Log_Folder, []() {
+        QString path = QString::fromStdString(FileUtil::GetUserPath(FileUtil::UserPath::LogDir));
+        QDesktopServices::openUrl(QUrl::fromLocalFile(path));
+    });
     connect_menu(ui->action_FAQ, []() {
         QDesktopServices::openUrl(QUrl(QStringLiteral("https://cytrus-emu.org/wiki/faq/")));
     });
