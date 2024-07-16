@@ -25,7 +25,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.navigation.fragment.NavHostFragment
 import androidx.preference.PreferenceManager
-import org.cytrus.cytrus_emu.CitraApplication
+import org.cytrus.cytrus_emu.CytrusApplication
 import org.cytrus.cytrus_emu.NativeLibrary
 import org.cytrus.cytrus_emu.R
 import org.cytrus.cytrus_emu.camera.StillImageCameraHelper.OnFilePickerResult
@@ -35,12 +35,9 @@ import org.cytrus.cytrus_emu.display.ScreenAdjustmentUtil
 import org.cytrus.cytrus_emu.features.hotkeys.HotkeyUtility
 import org.cytrus.cytrus_emu.features.settings.model.SettingsViewModel
 import org.cytrus.cytrus_emu.features.settings.model.view.InputBindingSetting
-import org.cytrus.cytrus_emu.features.settings.model.IntSetting
-import org.cytrus.cytrus_emu.features.settings.model.Settings
 import org.cytrus.cytrus_emu.fragments.MessageDialogFragment
 import org.cytrus.cytrus_emu.utils.ControllerMappingHelper
 import org.cytrus.cytrus_emu.utils.FileBrowserHelper
-import org.cytrus.cytrus_emu.utils.ForegroundService
 import org.cytrus.cytrus_emu.utils.EmulationLifecycleUtil
 import org.cytrus.cytrus_emu.utils.EmulationMenuSettings
 import org.cytrus.cytrus_emu.utils.ThemeUtil
@@ -49,7 +46,6 @@ import org.cytrus.cytrus_emu.viewmodel.EmulationViewModel
 class EmulationActivity : AppCompatActivity() {
     private val preferences: SharedPreferences
         get() = PreferenceManager.getDefaultSharedPreferences(CytrusApplication.appContext)
-    private var foregroundService: Intent? = null
     var isActivityRecreated = false
 
     private val settingsViewModel: SettingsViewModel by viewModels()
@@ -88,10 +84,6 @@ class EmulationActivity : AppCompatActivity() {
             windowManager.defaultDisplay.rotation
         )
 
-        // Start a foreground service to prevent the app from getting killed in the background
-        foregroundService = Intent(this, ForegroundService::class.java)
-        startForegroundService(foregroundService)
-
         EmulationLifecycleUtil.addShutdownHook(hook = { this.finish() })
     }
 
@@ -115,7 +107,6 @@ class EmulationActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         EmulationLifecycleUtil.clear()
-        stopForegroundService(this)
         super.onDestroy()
     }
 
@@ -461,12 +452,4 @@ class EmulationActivity : AppCompatActivity() {
 
             OnFilePickerResult(result.toString())
         }
-
-    companion object {
-        fun stopForegroundService(activity: Activity) {
-            val startIntent = Intent(activity, ForegroundService::class.java)
-            startIntent.action = ForegroundService.ACTION_STOP
-            activity.startForegroundService(startIntent)
-        }
-    }
 }
