@@ -238,7 +238,7 @@ bool Client::Connect() {
     }
 
     main_socket = ::socket(AF_INET, SOCK_STREAM, 0);
-    if (main_socket == (SOCKET)SOCKET_ERROR) {
+    if (static_cast<int>(main_socket) == -1) {
         LOG_ERROR(Network, "Failed to create socket");
         SignalCommunicationError();
         return false;
@@ -274,7 +274,7 @@ bool Client::Connect() {
             closesocket(main_socket);
             LOG_ERROR(Network, "Incompatible server version: {}", version_value);
             SignalCommunicationError("\nIncompatible Artic Base Server version.\nCheck for updates "
-                                     "to Artic Base Server or Citra.");
+                                     "to Artic Base Server or Cytrus.");
             return false;
         }
     } else {
@@ -622,7 +622,7 @@ std::optional<ArticBaseCommon::DataPacket> Client::SendRequestPacket(
     const std::chrono::nanoseconds& read_timeout) {
     std::scoped_lock<std::mutex> l(send_mutex);
 
-    if (main_socket == (SOCKET)SOCKET_ERROR) {
+    if (static_cast<int>(main_socket) == -1) {
         return std::nullopt;
     }
 
@@ -690,7 +690,7 @@ Client::Handler::Handler(Client& _client, u32 _addr, u16 _port, int _id)
 
 void Client::Handler::RunLoop() {
     handler_socket = ::socket(AF_INET, SOCK_STREAM, 0);
-    if (handler_socket == (SOCKET)SOCKET_ERROR) {
+    if (static_cast<int>(handler_socket) == -1) {
         LOG_ERROR(Network, "Failed to create socket");
         return;
     }

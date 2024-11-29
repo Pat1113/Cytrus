@@ -33,6 +33,8 @@ import org.cytrus.cytrus_emu.contracts.OpenFileResultContract
 import org.cytrus.cytrus_emu.databinding.ActivityEmulationBinding
 import org.cytrus.cytrus_emu.display.ScreenAdjustmentUtil
 import org.cytrus.cytrus_emu.features.hotkeys.HotkeyUtility
+import org.cytrus.cytrus_emu.features.settings.model.IntSetting
+import org.cytrus.cytrus_emu.features.settings.model.Settings
 import org.cytrus.cytrus_emu.features.settings.model.SettingsViewModel
 import org.cytrus.cytrus_emu.features.settings.model.view.InputBindingSetting
 import org.cytrus.cytrus_emu.fragments.MessageDialogFragment

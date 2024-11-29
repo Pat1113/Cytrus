@@ -15,10 +15,6 @@
     <!-- Generic buttons (Shared with lots of stuff) -->
     <string name="generic_buttons">Nappulat</string>
 
-    <!-- Premium settings strings -->
-    <string name="design">Vaihda teema (Vaalea, Tumma)</string>
-    <string name="design_updated">Teema päivittyy kun asetukset suljetaan</string>
-
     <!-- Core settings strings -->
     <string name="cpu_jit">Aktivoi CPU JIT</string>
     <string name="cpu_jit_description">Käyttää Just-in-Time (JIT) kääntäjää prosessorin emulointiin. Kun tämä on päällä, pelien suorituskyky on huomattavasti parempi.</string>

@@ -2247,7 +2247,7 @@ std::optional<SOC_U::InterfaceInfo> SOC_U::GetDefaultInterfaceInfo() {
     socklen_t s_info_len = sizeof(struct sockaddr_in);
     sockaddr_in s_info;
 
-    if ((sock_fd = ::socket(AF_INET, SOCK_STREAM, 0)) == (SOCKET)SOCKET_ERROR) {
+    if (static_cast<int>(sock_fd = ::socket(AF_INET, SOCK_STREAM, 0)) == -1) {
         return std::nullopt;
     }
 
