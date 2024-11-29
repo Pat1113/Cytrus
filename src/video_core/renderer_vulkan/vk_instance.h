@@ -41,8 +41,7 @@ struct FormatTraits {
 class Instance {
 public:
     explicit Instance(bool validation = false, bool dump_command_buffers = false);
-    explicit Instance(Core::TelemetrySession& telemetry, Frontend::EmuWindow& window,
-                      u32 physical_device_index);
+    explicit Instance(Frontend::EmuWindow& window, u32 physical_device_index);
     ~Instance();
 
     /// Returns the FormatTraits struct for the provided pixel format
