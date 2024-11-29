@@ -76,11 +76,11 @@ enum class KernelState {
      */
     KERNEL_STATE_REBOOT = 7,
 
-    // Special Citra only states.
+    // Special Cytrus only states.
     /**
      * Sets the emulation speed percentage. A value of 0 means unthrottled.
      */
-    KERNEL_STATE_CITRA_EMULATION_SPEED = 0x20000 ///
+    KERNEL_STATE_CYTRUS_EMULATION_SPEED = 0x20000 ///
 };
 
 struct PageInfo {
@@ -1429,8 +1429,8 @@ Result SVC::KernelSetState(u32 kernel_state, u32 varg1, u32 varg2) {
         system.RequestShutdown();
         break;
 
-    // Citra specific states.
-    case KernelState::KERNEL_STATE_CITRA_EMULATION_SPEED: {
+    // Cytrus specific states.
+    case KernelState::KERNEL_STATE_CYTRUS_EMULATION_SPEED: {
         u16 new_value = static_cast<u16>(varg1);
         Settings::values.frame_limit.SetValue(new_value);
     } break;

@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_disclaimer">이 소프트웨어는 닌텐도 3DS 휴대용 게임 콘솔을 실행합니다. 게임타이틀이 포함되어있지 않습니다.\n\n실행하기전에 합법적으로 소유한 3DS 게임을 기기저장소에 저장하십시오.</string>
-    <string name="app_notification_channel_description">CItra 3DS 에뮬레이터 알림</string>
+    <string name="app_notification_channel_description">Citra 3DS 에뮬레이터 알림</string>
     <string name="app_notification_running">Cytrus 실행중</string>
 
     <!-- Input related strings -->
